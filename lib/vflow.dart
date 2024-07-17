@@ -1,19 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'providers/waterflowprovider.dart';
 
-class Vflow extends StatefulWidget {
+class Vflow extends StatelessWidget {
   const Vflow({super.key});
 
   @override
-  State<Vflow> createState() => _VflowState();
-}
-
-class _VflowState extends State<Vflow> {
-  // Fixed the class name
-  @override
   Widget build(BuildContext context) {
+    final waterFlowProvider = Provider.of<WaterFlowProvider>(context);
+
     return Scaffold(
-      body: Center(
-        child: Text('Ini vflow'),
+      appBar: AppBar(
+        title: const Text('Vflow Control'),
+        backgroundColor: Colors.blueAccent,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              waterFlowProvider.isWaterOn ? Icons.opacity : Icons.block,
+              color: waterFlowProvider.isWaterOn ? Colors.blue : Colors.grey,
+              size: 100,
+            ),
+            const SizedBox(height: 20),
+            Text(
+              waterFlowProvider.isWaterOn ? 'Water is ON' : 'Water is OFF',
+              style: TextStyle(
+                fontSize: 24,
+                color: waterFlowProvider.isWaterOn ? Colors.blue : Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: waterFlowProvider.toggleWaterFlow,
+              style: ElevatedButton.styleFrom(
+                primary:
+                    waterFlowProvider.isWaterOn ? Colors.red : Colors.green,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              child: Text(waterFlowProvider.isWaterOn ? 'Turn OFF' : 'Turn ON'),
+            ),
+          ],
+        ),
       ),
     );
   }
