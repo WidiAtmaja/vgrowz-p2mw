@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'providers/waterflowprovider.dart';
+import '../providers/waterflowprovider.dart';
 
 class Vflow extends StatelessWidget {
   const Vflow({super.key});

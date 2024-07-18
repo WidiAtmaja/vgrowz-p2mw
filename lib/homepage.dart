@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'vflow.dart';
-import 'vhydro.dart';
-import 'vlume.dart';
+import 'package:vgrowz/components/drawer.dart';
+import 'screens/vflow.dart';
+import 'screens/vhydro.dart';
+import 'screens/vlume.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -21,6 +22,10 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('V-Growz'),
+      ),
+      drawer: DrawerDetail(),
       body: Center(
         child: body[_curentIndex],
       ),
