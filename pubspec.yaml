@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  google_fonts: ^4.0.4
   provider: ^6.1.2
 
 dev_dependencies:
@@ -18,3 +19,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  
+  assets:
+    - assets/images/icon_aplikasi.png
+    - assets/images/logo_vgrowz.png
+    - assets/images/logo_vgrowz_putih.png

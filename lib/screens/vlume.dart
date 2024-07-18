@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vgrowz/utils/utils.dart';
 
 class Vlume extends StatefulWidget {
   const Vlume({super.key});
@@ -12,6 +13,7 @@ class _VlumeState extends State<Vlume> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.primary,
       body: Center(
         child: Text('Ini Vlume'),
       ),

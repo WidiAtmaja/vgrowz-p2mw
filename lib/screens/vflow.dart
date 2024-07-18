@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/waterflowprovider.dart';
+import 'package:vgrowz/utils/utils.dart';
 
 class Vflow extends StatelessWidget {
   const Vflow({super.key});
@@ -10,10 +11,7 @@ class Vflow extends StatelessWidget {
     final waterFlowProvider = Provider.of<WaterFlowProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Vflow Control'),
-        backgroundColor: Colors.blueAccent,
-      ),
+      backgroundColor: AppColors.primary,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
