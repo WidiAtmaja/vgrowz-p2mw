@@ -81,7 +81,7 @@ class _VflowState extends State<Vflow> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Klik Tombol\nUntuk Mengaktifkan',
+                          'Klik Tombol Untuk \n Mengaktifkan Penyiraman',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: TextColor.secondary,
