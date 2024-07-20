@@ -13,11 +13,17 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  int _curentIndex = 0;
-  List<Widget> body = const [
+  int _currentIndex = 0;
+  List<Widget> _screens = [
     Vlume(),
     Vflow(),
     Vhydro(),
+  ];
+
+  List<String> _appBarTitles = [
+    'V-Lume',
+    'V-Flow',
+    'V-Hydro',
   ];
 
   @override
@@ -35,19 +41,20 @@ class _HomepageState extends State<Homepage> {
           ),
         ),
         title: Text(
-          'V-Growz',
+          _appBarTitles[_currentIndex],
           style: TextStyles.heading1,
         ),
       ),
       endDrawer: DrawerDetail(),
-      body: Center(
-        child: body[_curentIndex],
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screens,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _curentIndex,
+        currentIndex: _currentIndex,
         onTap: (int newIndex) {
           setState(() {
-            _curentIndex = newIndex;
+            _currentIndex = newIndex;
           });
         },
         iconSize: 30.0, // ukuran ikon
@@ -61,31 +68,22 @@ class _HomepageState extends State<Homepage> {
           BottomNavigationBarItem(
             label: 'V-Lume',
             icon: Padding(
-              padding:
-                  EdgeInsets.only(bottom: 8.0), // Adjust the padding as needed
-              child: Icon(
-                Icons.brightness_7_rounded,
-              ),
+              padding: EdgeInsets.only(bottom: 8.0),
+              child: Icon(Icons.brightness_7_rounded),
             ),
           ),
           BottomNavigationBarItem(
             label: 'V-Flow',
             icon: Padding(
-              padding:
-                  EdgeInsets.only(bottom: 8.0), // Adjust the padding as needed
-              child: Icon(
-                Icons.water_drop,
-              ),
+              padding: EdgeInsets.only(bottom: 8.0),
+              child: Icon(Icons.water_drop),
             ),
           ),
           BottomNavigationBarItem(
             label: 'V-Hydro',
             icon: Padding(
-              padding:
-                  EdgeInsets.only(bottom: 8.0), // Adjust the padding as needed
-              child: Icon(
-                Icons.water_sharp,
-              ),
+              padding: EdgeInsets.only(bottom: 8.0),
+              child: Icon(Icons.water_sharp),
             ),
           ),
         ],
