@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vgrowz/utils/utils.dart';
+import 'package:vgrowz/providers/mqtt_providers.dart';
 
-class Vlume extends StatefulWidget {
+class Vlume extends StatelessWidget {
   const Vlume({super.key});
 
   @override
-  State<Vlume> createState() => _VlumeState();
-}
-
-class _VlumeState extends State<Vlume> {
-  // Fixed the class name
-  @override
   Widget build(BuildContext context) {
+    final mqttProvider = Provider.of<MqttProvider>(context);
+
     return Scaffold(
       backgroundColor: AppColors.primary,
       body: Center(
@@ -39,9 +37,7 @@ class _VlumeState extends State<Vlume> {
                               fontSize: 24,
                               fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(
-                          height: 15,
-                        ),
+                        SizedBox(height: 15),
                         Container(
                           width: 170,
                           height: 50,
@@ -51,7 +47,8 @@ class _VlumeState extends State<Vlume> {
                           ),
                           child: Center(
                             child: Text(
-                              '229',
+                              mqttProvider
+                                  .lightIntensity, // Use lightIntensity property
                               style: TextStyles.status,
                             ),
                           ),
@@ -67,7 +64,9 @@ class _VlumeState extends State<Vlume> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.read<MqttProvider>().upLume();
+                            },
                             child: Icon(
                               Icons.arrow_upward,
                               size: 70,
@@ -81,7 +80,9 @@ class _VlumeState extends State<Vlume> {
                           ),
                           SizedBox(height: 10), // Space between the two buttons
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.read<MqttProvider>().downLume();
+                            },
                             child: Icon(
                               Icons.arrow_downward,
                               size: 70,
@@ -110,9 +111,7 @@ class _VlumeState extends State<Vlume> {
                               fontSize: 22,
                               fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        SizedBox(height: 10),
                         Text(
                           'Jika diaktifkan maka paranet \n otomatis dilakukan',
                           textAlign: TextAlign.center,

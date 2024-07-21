@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vgrowz/utils/utils.dart';
+import 'package:vgrowz/providers/mqtt_providers.dart';
 
-class Vhydro extends StatefulWidget {
+class Vhydro extends StatelessWidget {
   const Vhydro({super.key});
 
   @override
-  State<Vhydro> createState() => _VhydroState();
-}
-
-class _VhydroState extends State<Vhydro> {
-  @override
   Widget build(BuildContext context) {
+    final mqttProvider = Provider.of<MqttProvider>(context);
+
     return Scaffold(
         backgroundColor: AppColors.primary,
         body: Center(
@@ -43,7 +42,7 @@ class _VhydroState extends State<Vhydro> {
                       ),
                       child: Center(
                         child: Text(
-                          '879',
+                          mqttProvider.soilMoisture,
                           style: TextStyles.lembab,
                         ),
                       ),

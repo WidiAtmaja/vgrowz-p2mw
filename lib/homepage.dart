@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:vgrowz/components/drawer.dart';
 import 'package:vgrowz/utils/utils.dart';
 import 'screens/vflow.dart';
@@ -13,6 +15,64 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  late MqttServerClient client;
+  final broker = '35d77ed3f8b849669b3a64e6626d0b43.s1.eu.hivemq.cloud';
+  final port = 8883;
+  final username = 'vgrowz-esp1';
+  final passwd = 'ESP1vgrowz';
+
+  final soil_moisture_topic = 'vgrowz/soil_moisture';
+  final light_intensity_topic = 'vgrowz/light_intensity';
+  final control_topic = 'vgrowz/control';
+  final control_topic2 = 'vgrowz/control2';
+
+  @override
+  void initState() {
+    super.initState();
+    setupMqttClient();
+  }
+
+  void setupMqttClient() async {
+    client = MqttServerClient(broker, '');
+    client.port = port;
+    client.secure = true;
+    client.logging(on: true);
+    client.keepAlivePeriod = 20;
+    client.onConnected = onConnected;
+    client.onDisconnected = onDisconnected;
+    client.onSubscribed = onSubscribed;
+
+    final connMessage = MqttConnectMessage()
+        .withWillTopic('willtopic')
+        .withWillMessage('My Will message')
+        .startClean()
+        .withWillQos(MqttQos.atLeastOnce);
+    client.connectionMessage = connMessage;
+
+    try {
+      await client.connect(username, passwd);
+    } on Exception catch (e) {
+      print('EXCEPTION: $e');
+      client.disconnect();
+    }
+  }
+
+  void onConnected() {
+    print('Connected');
+    client.subscribe(soil_moisture_topic, MqttQos.exactlyOnce);
+    client.subscribe(light_intensity_topic, MqttQos.exactlyOnce);
+    client.subscribe(control_topic, MqttQos.exactlyOnce);
+    client.subscribe(control_topic2, MqttQos.exactlyOnce);
+  }
+
+  void onDisconnected() {
+    print('Disconnected');
+  }
+
+  void onSubscribed(String topic) {
+    print('Subscribed to $topic');
+  }
+
   int _currentIndex = 0;
   List<Widget> _screens = [
     Vlume(),

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'homepage.dart';
-import 'providers/waterflowprovider.dart';
+import 'providers/mqtt_providers.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => WaterFlowProvider()),
+        ChangeNotifierProvider(create: (_) => MqttProvider()),
       ],
       child: const MainApp(),
     ),

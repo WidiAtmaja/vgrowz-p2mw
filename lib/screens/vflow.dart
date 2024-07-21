@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vgrowz/utils/utils.dart';
+import 'package:vgrowz/providers/mqtt_providers.dart';
 
-class Vflow extends StatefulWidget {
+class Vflow extends StatelessWidget {
   const Vflow({super.key});
 
   @override
-  State<Vflow> createState() => _VflowState();
-}
-
-class _VflowState extends State<Vflow> {
-  @override
   Widget build(BuildContext context) {
+    final mqttProvider = Provider.of<MqttProvider>(context);
+
     return Scaffold(
       backgroundColor: AppColors.primary,
       body: Center(
@@ -38,19 +37,22 @@ class _VflowState extends State<Vflow> {
                               fontSize: 24,
                               fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(
-                          height: 15,
-                        ),
+                        SizedBox(height: 15),
                         Container(
                           width: 170,
                           height: 40,
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 25, 110, 28),
+                            color: mqttProvider.isWateringActive
+                                ? Color.fromARGB(
+                                    255, 25, 110, 28) // Hijau jika aktif
+                                : Colors.red, // Merah jika tidak aktif
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Center(
                             child: Text(
-                              'Aktif',
+                              mqttProvider.isWateringActive
+                                  ? 'Aktif'
+                                  : 'Tidak Aktif',
                               style: TextStyles.status,
                             ),
                           ),
@@ -62,17 +64,18 @@ class _VflowState extends State<Vflow> {
                 Flexible(
                   flex: 4,
                   child: Center(
-                      child: ElevatedButton(
-                    onPressed: () {},
-                    child: Icon(
-                      Icons.power_settings_new,
-                      size: 90,
+                    child: ElevatedButton(
+                      onPressed: mqttProvider.toggleWatering,
+                      child: Icon(
+                        Icons.power_settings_new,
+                        size: 90,
+                      ),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.button,
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(60)),
                     ),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.button,
-                        shape: CircleBorder(),
-                        padding: EdgeInsets.all(60)),
-                  )),
+                  ),
                 ),
                 Flexible(
                   flex: 2,
@@ -88,9 +91,7 @@ class _VflowState extends State<Vflow> {
                               fontSize: 22,
                               fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        SizedBox(height: 10),
                         Text(
                           'Jika diaktifkan maka penyiraman \n otomatis dilakukan',
                           textAlign: TextAlign.center,
