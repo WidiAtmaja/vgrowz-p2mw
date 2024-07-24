@@ -44,7 +44,6 @@ class MqttProvider with ChangeNotifier {
 
     try {
       await client.connect(username, passwd);
-      // Subscribe to topics after connecting
       client.subscribe(controlTopic, MqttQos.exactlyOnce);
       client.subscribe(controlTopic2, MqttQos.exactlyOnce);
       client.subscribe(light_intensity_topic, MqttQos.exactlyOnce);
@@ -75,7 +74,6 @@ class MqttProvider with ChangeNotifier {
   }
 
   void onConnected() {
-    print('Connected');
     isConnected = true;
     client.subscribe(controlTopic, MqttQos.exactlyOnce);
     client.subscribe(controlTopic2, MqttQos.exactlyOnce);
@@ -109,7 +107,6 @@ class MqttProvider with ChangeNotifier {
   }
 
   void onDisconnected() {
-    print('Disconnected');
     isConnected = false;
     notifyListeners();
   }
@@ -127,9 +124,7 @@ class MqttProvider with ChangeNotifier {
       } catch (e) {
         print('Failed to send message: $e');
       }
-    } else {
-      print('Not Connected');
-    }
+    } else {}
   }
 
   void handleReceivedMessages(
@@ -154,7 +149,7 @@ class MqttProvider with ChangeNotifier {
   }
 
   void downLume() {
-    sendMessage(controlTopic, '2');
+    sendMessage(controlTopic, '0');
     notifyListeners();
   }
 

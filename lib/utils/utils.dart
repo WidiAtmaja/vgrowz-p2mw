@@ -40,6 +40,12 @@ class TextStyles {
     color: Color.fromARGB(255, 250, 255, 255),
   );
 
+  static final TextStyle status2 = GoogleFonts.poppins(
+    fontSize: 36,
+    fontWeight: FontWeight.bold,
+    color: Color.fromARGB(255, 250, 255, 255),
+  );
+
   static final TextStyle lembab = GoogleFonts.poppins(
     fontSize: 64,
     fontWeight: FontWeight.bold,

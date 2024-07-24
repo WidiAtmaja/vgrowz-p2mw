@@ -17,7 +17,6 @@ class Vlume extends StatelessWidget {
           height: 550,
           width: 370,
           decoration: BoxDecoration(
-            color: AppColors.bgcard,
             borderRadius: BorderRadius.circular(20),
           ),
           child: ClipRRect(

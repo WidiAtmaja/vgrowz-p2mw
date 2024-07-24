@@ -16,9 +16,7 @@ class Vhydro extends StatelessWidget {
           child: Container(
             height: 550,
             width: 370,
-            decoration: BoxDecoration(
-                color: AppColors.bgcard,
-                borderRadius: BorderRadius.circular(20)),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

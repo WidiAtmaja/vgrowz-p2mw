@@ -5,34 +5,27 @@ class DrawerDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: AppColors.drawer,
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: AppColors.secondary,
+      backgroundColor: AppColors.secondary,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/logo_vgrowz.png',
+              height: 100,
+              width: 100,
             ),
-            child: Text(
-              'V-Growz',
-              style: TextStyles.heading1,
+            SizedBox(height: 20), // Jarak antara logo dan teks
+            Text('V-Growz', style: TextStyles.status2),
+            SizedBox(height: 20), // Jarak antara teks dan logo kedua
+            Image.asset(
+              'assets/images/logo_p2mw.png',
+              height: 200,
+              width: 200,
             ),
-          ),
-          ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Home'),
-            onTap: () {
-              Navigator.pop(context); // Menutup drawer
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () {
-              Navigator.pop(context); // Menutup drawer
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

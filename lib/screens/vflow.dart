@@ -17,7 +17,6 @@ class Vflow extends StatelessWidget {
           height: 550,
           width: 370,
           decoration: BoxDecoration(
-            color: AppColors.bgcard,
             borderRadius: BorderRadius.circular(20),
           ),
           child: ClipRRect(
@@ -39,15 +38,6 @@ class Vflow extends StatelessWidget {
                         ),
                         SizedBox(height: 15),
                         Container(
-                          width: 170,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: mqttProvider.isWateringActive
-                                ? Color.fromARGB(
-                                    255, 25, 110, 28) // Hijau jika aktif
-                                : Colors.red, // Merah jika tidak aktif
-                            borderRadius: BorderRadius.circular(20),
-                          ),
                           child: Center(
                             child: Text(
                               mqttProvider.isWateringActive
@@ -71,7 +61,9 @@ class Vflow extends StatelessWidget {
                         size: 90,
                       ),
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.button,
+                          backgroundColor: mqttProvider.isWateringActive
+                              ? Color.fromARGB(255, 25, 110, 28)
+                              : Color.fromARGB(255, 158, 37, 29),
                           shape: CircleBorder(),
                           padding: EdgeInsets.all(60)),
                     ),
