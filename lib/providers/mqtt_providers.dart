@@ -13,10 +13,13 @@ class MqttProvider with ChangeNotifier {
   final controlTopic2 = 'vgrowz/control2';
   final soil_moisture_topic = 'vgrowz/soil_moisture';
   final light_intensity_topic = 'vgrowz/light_intensity';
+  final automatic = 'vgrowz/automode';
 
   bool isConnected = false;
-  bool isLumeActive = false;
+  bool isUpLume = false;
+  bool isDownLume = false;
   bool isWateringActive = false;
+  bool isAutomatic = false;
 
   String lightIntensity = '0';
   String soilMoisture = '0';
@@ -48,6 +51,7 @@ class MqttProvider with ChangeNotifier {
       client.subscribe(controlTopic2, MqttQos.exactlyOnce);
       client.subscribe(light_intensity_topic, MqttQos.exactlyOnce);
       client.subscribe(soil_moisture_topic, MqttQos.exactlyOnce);
+      client.subscribe(automatic, MqttQos.exactlyOnce);
     } on Exception catch (e) {
       print('EXCEPTION: $e');
       client.disconnect();
@@ -79,6 +83,7 @@ class MqttProvider with ChangeNotifier {
     client.subscribe(controlTopic2, MqttQos.exactlyOnce);
     client.subscribe(light_intensity_topic, MqttQos.exactlyOnce);
     client.subscribe(soil_moisture_topic, MqttQos.exactlyOnce);
+    client.subscribe(automatic, MqttQos.exactlyOnce);
 
     client.updates!.listen((List<MqttReceivedMessage<MqttMessage?>>? c) {
       for (var message in c!) {
@@ -87,19 +92,17 @@ class MqttProvider with ChangeNotifier {
         final String pt =
             MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
 
-        print(
-            'Received message: $pt on topic: ${message.topic}'); // Log received message
-
         if (message.topic == light_intensity_topic) {
           lightIntensity = pt;
-          print('Updated lightIntensity: $lightIntensity'); // Log for debugging
         } else if (message.topic == soil_moisture_topic) {
           soilMoisture = pt;
-          print('Updated soilMoisture: $soilMoisture'); // Log for debugging
         } else if (message.topic == controlTopic2) {
           isWateringActive = pt == '1';
-          print(
-              'Updated isWateringActive: $isWateringActive'); // Log for debugging
+        } else if (message.topic == controlTopic) {
+          isUpLume = pt == '1';
+          isDownLume = pt == '0';
+        } else if (message.topic == automatic) {
+          isAutomatic = pt == '1';
         }
         notifyListeners();
       }
@@ -121,10 +124,8 @@ class MqttProvider with ChangeNotifier {
       builder.addString(message);
       try {
         client.publishMessage(topic, MqttQos.exactlyOnce, builder.payload!);
-      } catch (e) {
-        print('Failed to send message: $e');
-      }
-    } else {}
+      } catch (e) {}
+    }
   }
 
   void handleReceivedMessages(
@@ -134,21 +135,35 @@ class MqttProvider with ChangeNotifier {
       final String pt =
           MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
 
-      print('Received message: $pt on topic: ${message.topic}');
       if (message.topic == controlTopic2) {
         isWateringActive = pt == '1';
-        print('Updated isWateringActive: $isWateringActive');
-        notifyListeners();
       }
+      notifyListeners();
+    }
+  }
+
+  void handleReceivedMessages2(
+      List<MqttReceivedMessage<MqttMessage?>> messages) {
+    for (final message in messages) {
+      final MqttPublishMessage recMess = message.payload as MqttPublishMessage;
+      final String pt =
+          MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+
+      if (message.topic == automatic) {
+        isAutomatic = pt == '1';
+      }
+      notifyListeners();
     }
   }
 
   void upLume() {
+    isUpLume = true;
     sendMessage(controlTopic, '1');
     notifyListeners();
   }
 
   void downLume() {
+    isDownLume = true;
     sendMessage(controlTopic, '0');
     notifyListeners();
   }
@@ -156,6 +171,12 @@ class MqttProvider with ChangeNotifier {
   void toggleWatering() {
     isWateringActive = !isWateringActive;
     sendMessage(controlTopic2, isWateringActive ? '1' : '0');
+    notifyListeners();
+  }
+
+  void toogleAutomatic() {
+    isAutomatic = !isAutomatic;
+    sendMessage(automatic, isAutomatic ? '1' : '0');
     notifyListeners();
   }
 }

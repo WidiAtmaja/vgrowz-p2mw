@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vgrowz/utils/utils.dart';
 import 'package:vgrowz/providers/mqtt_providers.dart';
+import 'package:vgrowz/utils/color_meter.dart';
 
 class Vlume extends StatelessWidget {
   const Vlume({super.key});
@@ -46,56 +47,102 @@ class Vlume extends StatelessWidget {
                           ),
                           child: Center(
                             child: Text(
-                              mqttProvider
-                                  .lightIntensity, // Use lightIntensity property
-                              style: TextStyles.status,
+                              '${mqttProvider.lightIntensity}%', // Add % symbol
+                              style: TextStyle(
+                                color: getColorForLightIntensity(
+                                    mqttProvider.lightIntensity),
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
                 ),
                 Flexible(
-                    flex: 4,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              context.read<MqttProvider>().upLume();
-                            },
-                            child: Icon(
-                              Icons.arrow_upward,
-                              size: 70,
+                  flex: 4,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            context.read<MqttProvider>().toogleAutomatic();
+                          },
+                          child: Text(
+                              mqttProvider.isAutomatic ? 'Auto' : 'Manual'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: mqttProvider.isAutomatic
+                                ? Color.fromARGB(
+                                    255, 50, 205, 50) // Hijau cerah
+                                : Color.fromARGB(
+                                    255, 255, 69, 0), // Merah cerah
+                            padding: EdgeInsets.all(15),
+                            minimumSize: Size(80, 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.button,
-                                padding: EdgeInsets.all(15),
-                                minimumSize: Size(170, 70),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
                           ),
-                          SizedBox(height: 10), // Space between the two buttons
-                          ElevatedButton(
-                            onPressed: () {
-                              context.read<MqttProvider>().downLume();
-                            },
-                            child: Icon(
-                              Icons.arrow_downward,
-                              size: 70,
+                        ),
+
+                        SizedBox(
+                          height: 15,
+                        ),
+                        ElevatedButton(
+                          onPressed: mqttProvider.isAutomatic
+                              ? null
+                              : () {
+                                  context.read<MqttProvider>().upLume();
+                                },
+                          child: Icon(
+                            Icons.arrow_upward,
+                            size: 70,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: mqttProvider.isAutomatic
+                                ? Color.fromRGBO(
+                                    4, 87, 77, 1) // Transparan saat otomatis
+                                : mqttProvider.isUpLume
+                                    ? Color.fromRGBO(10, 177, 157, 1)
+                                    : Color.fromRGBO(4, 87, 77, 1),
+                            padding: EdgeInsets.all(15),
+                            minimumSize: Size(170, 70),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.button,
-                                padding: EdgeInsets.all(15),
-                                minimumSize: Size(170, 70),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
                           ),
-                        ],
-                      ),
-                    )),
+                        ),
+                        SizedBox(height: 10), // Space between the two buttons
+                        ElevatedButton(
+                          onPressed: mqttProvider.isAutomatic
+                              ? null
+                              : () {
+                                  context.read<MqttProvider>().downLume();
+                                },
+                          child: Icon(
+                            Icons.arrow_downward,
+                            size: 70,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: mqttProvider.isAutomatic
+                                ? Color.fromRGBO(
+                                    4, 87, 77, 1) // Transparan saat otomatis
+                                : mqttProvider.isDownLume
+                                    ? Color.fromRGBO(10, 177, 157, 1)
+                                    : Color.fromRGBO(4, 87, 77, 1),
+                            padding: EdgeInsets.all(15),
+                            minimumSize: Size(170, 70),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 Flexible(
                   flex: 2,
                   child: Center(
@@ -117,7 +164,7 @@ class Vlume extends StatelessWidget {
                           style: TextStyle(
                             color: Color.fromARGB(184, 216, 216, 216),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),

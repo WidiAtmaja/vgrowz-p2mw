@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vgrowz/utils/utils.dart';
 import 'package:vgrowz/providers/mqtt_providers.dart';
+import 'package:vgrowz/utils/color_meter.dart';
 
 class Vhydro extends StatelessWidget {
   const Vhydro({super.key});
@@ -40,7 +41,7 @@ class Vhydro extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          mqttProvider.soilMoisture,
+                          '${mqttProvider.soilMoisture}%',
                           style: TextStyles.lembab,
                         ),
                       ),
@@ -55,6 +56,17 @@ class Vhydro extends StatelessWidget {
                     ),
                   ),
                 ),
+                Container(
+                  child: Text(
+                    getMoistureDescription(
+                        mqttProvider.soilMoisture), // Add % symbol
+                    style: TextStyle(
+                      color: getColorForMoisture(mqttProvider.soilMoisture),
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
               ],
             ),
           ),
