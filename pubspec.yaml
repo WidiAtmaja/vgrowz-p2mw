@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.2.19
   google_fonts: ^4.0.4
   mqtt_client: ^9.8.1
   provider: ^6.1.2
@@ -24,5 +26,16 @@ flutter:
   assets:
     - assets/images/icon_aplikasi.png
     - assets/images/logo_vgrowz.png
+    - assets/images/logo_vgrowz_splash.png
     - assets/images/logo_vgrowz_putih.png
     - assets/images/logo_p2mw.png
+
+flutter_native_splash:
+  color: "#05191d"  
+  image: assets/images/logo_vgrowz_splash.png
+  android: true  
+
+flutter_icons:
+  android: true
+  image_path: "assets/images/icon_aplikasi.png"
+ 
